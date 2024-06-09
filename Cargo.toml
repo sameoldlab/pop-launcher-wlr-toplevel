@@ -1,0 +1,14 @@
+[package]
+name = "toplevel"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.18.2", features = ["rt"] }
+serde = { version = "^1", features = ["derive"] }
+anyhow = "1.0.57"
+onagre-launcher-toolkit = "0.1.2"
+
+# wayland-client = "0.31.3"
+# wayland-protocols-async = "1.0.0"
+# wayland-protocols-wlr = {version= "0.3.1", features = ['client']}
