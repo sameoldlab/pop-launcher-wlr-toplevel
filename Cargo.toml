@@ -8,6 +8,7 @@ tokio = { version = "1.18.2", features = ["rt"] }
 serde = { version = "^1", features = ["derive"] }
 anyhow = "1.0.57"
 onagre-launcher-toolkit = "0.1.2"
+freedesktop-icons = "0.2.6"
 
 # wayland-client = "0.31.3"
 # wayland-protocols-async = "1.0.0"

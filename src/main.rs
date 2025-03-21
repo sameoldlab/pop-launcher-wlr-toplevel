@@ -32,14 +32,20 @@ impl PluginExt for ToplevelPlugin {
         let toplevels = get_toplevel();
         let filtered = filter_toplevels(toplevels, &query);
         self.items = filtered;
-        //TODO: Get icon for from app_id
-        let icon = Cow::Borrowed("application-x-executable");
         for (idx, item) in self.items.iter().enumerate() {
+            let app_id = item.app_id.clone();
+
+            let mut icon = freedesktop_icons::lookup(&item.app_id).with_cache().find();
+            if None == icon {
+                icon = freedesktop_icons::lookup(&app_id.split('.').last().unwrap().to_lowercase())
+                    .find();
+            }
+            let icon = icon.map(|path| IconSource::Name(Cow::Owned(path.display().to_string())));
             self.respond_with(PluginResponse::Append(PluginSearchResult {
                 id: idx as u32,
-                name: item.app_id.clone(),
-                description: item.title.clone(),
-                icon: Some(IconSource::Mime(icon.clone())),
+                name: item.title.clone(),
+                description: item.app_id.clone(),
+                icon,
                 ..Default::default()
             }))
             .await
@@ -109,6 +115,7 @@ fn filter_toplevels(toplevels: Vec<ToplevelEntry>, filter: &str) -> Vec<Toplevel
         })
         .collect()
 }
+
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
